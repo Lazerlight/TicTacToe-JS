@@ -19,6 +19,7 @@ body {
   align-content: center;
   grid-template-columns: repeat(3, auto);
 }
+
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
@@ -27,7 +28,14 @@ body {
   position: relative;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
+
+.cell.x,
+.cell.circle {
+  cursor: not-allowed;
+}
+
 .cell:first-child,
 .cell:nth-child(2),
 .cell:nth-child(3) {
@@ -45,8 +53,17 @@ body {
   border-bottom: none;
 }
 
+.board.x .cell:not(.x):not(.circle):hover::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  opacity: 0.5;
+}
+
 .cell.x::before,
-.cell.x::after {
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
   content: "";
   position: absolute;
   width: calc(var(--mark-size) * 0.15);
@@ -54,9 +71,53 @@ body {
   background-color: black;
 }
 
-.cell.x::before {
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
   transform: rotate(45deg);
 }
-.cell.x::after {
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
   transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  content: "";
+  position: absolute;
+  width: var(--mark-size);
+  height: var(--mark-size);
+  border: calc(var(--mark-size) * 0.15) black solid;
+  border-radius: 50%;
+}
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 5rem;
+  flex-direction: column;
+}
+.winning-message button {
+  font-size: 3rem;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+}
+
+.winning-message button:hover {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+.winning-message.show {
+  display: flex;
 }
